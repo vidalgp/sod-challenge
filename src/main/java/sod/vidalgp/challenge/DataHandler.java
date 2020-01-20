@@ -10,8 +10,6 @@ import org.apache.spark.sql.Row;
 import static org.apache.spark.sql.functions.*;
 import org.apache.spark.sql.types.StructType;
 
-import org.apache.spark.sql.Encoder;
-import org.apache.spark.sql.Encoders;
 
 
 public class DataHandler {
@@ -28,17 +26,11 @@ public class DataHandler {
       .option("inferSchema", "true")
       .csv(inputPath);
 
-      // .schema(SchemaBuilder.getSchema(new StructType()))
-      // .as(Encoders.bean(SearchData.class));
-      // .format("csv")
-      // .load(inputPath);
-
-      df.show();
       df.printSchema();
-      // df.select(col("ts_search"), col("ds_search")).show();
 
-      Dataset<Row> dfSearch = SchemaFixer.fixSchema(df);
-      // final Dataset<SearchData> dfSearch = SchemaFixer.fix(df)
+      Dataset<SearchData> dfSearch = SchemaFixer.fixSchema(df);
+      dfSearch.printSchema();
+      // dfSearch.na().drop().write().format("csv").save("testfile.csv");
 
     }
 }

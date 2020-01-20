@@ -3,6 +3,7 @@ package sod.vidalgp.challenge;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.Column;
@@ -36,22 +37,30 @@ public class SchemaFixer {
         }, DataTypes.StringType
     );
 
-    static public Dataset<Row> fixSchema(Dataset<Row> df_0) {
-    // static public Dataset<SearchData> fixSchema(Dataset<Row> df_0) {
+    static public Dataset<SearchData> fixSchema(Dataset<Row> df_0) {
         Dataset<Row> df_1 = df_0
             .withColumn("ts_search"
-                ,when(col("ts_search").rlike("^.*\\d{2}:\\d{2}$"), to_date(col("ts_search"), "MM/dd/yy HH:mm"))
-                .when(col("ts_search").rlike("^.*\\s\\d{1}:\\d{2}$"), to_date(col("ts_search"), "MM/dd/yy H:mm")))
-            .withColumn("ds_cart", to_date(dateFixer.apply(col("ds_cart")), "MM/dd/yy"))
+                ,when(col("ts_search").rlike("^.*\\d{2}:\\d{2}$"), to_timestamp(col("ts_search"), "MM/dd/yy HH:mm"))
+                .when(col("ts_search").rlike("^.*\\s\\d{1}:\\d{2}$"), to_timestamp(col("ts_search"), "MM/dd/yy H:mm")))
+            .withColumn("ds_search", to_date(dateFixer.apply(col("ds_search")), "MM/dd/yy"))
             .withColumn("ds_purchased", to_date(dateFixer.apply(col("ds_purchased")), "MM/dd/yy"))
+            .withColumn("ds_cart", to_date(dateFixer.apply(col("ds_cart")), "MM/dd/yy"))
+            .withColumn("query_delivery_date_start", to_date(dateFixer.apply(col("query_delivery_date_start")), "MM/dd/yy"))
             .withColumn("query_delivery_end_date", to_date(dateFixer.apply(col("query_delivery_end_date")), "MM/dd/yy"))
-            .filter(col("ts_search").isNotNull())
-            .filter(col("query_delivery_end_date").isNotNull())
-            .filter(col("ds_cart").isNotNull());
-                    
-        df_1.printSchema();
-        df_1.select("ds_cart", "ts_search", "query_delivery_end_date").show();
-        return df_1;
+            .withColumn("query_price_max", col("query_price_max").cast(DataTypes.IntegerType))
+            .withColumn("query_price_min", col("query_price_min").cast(DataTypes.IntegerType))
+            .withColumn("product_review_count", col("product_review_count").cast(DataTypes.IntegerType))
+            .withColumn("product_type", col("product_type").cast(DataTypes.IntegerType))
+            .withColumn("product_recommended_items", col("product_recommended_items").cast(DataTypes.IntegerType))
+            .withColumn("product_recent_comments_count_90d", col("product_recent_comments_count_90d").cast(DataTypes.IntegerType))
+            .withColumn("product_short_term_price_factor"
+                ,when(not(col("product_short_term_price_factor").rlike("[0-9].*")), null)
+                .otherwise(col("product_short_term_price_factor"))
+                .cast(DataTypes.DoubleType));
+
+        Dataset<SearchData> ds = df_1.as(Encoders.bean(SearchData.class));
+        
+        return ds;
     }
 
 
