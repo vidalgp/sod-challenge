@@ -12,9 +12,8 @@ public class GcsController {
 
   @RequestMapping(value = "/processDataBlob", method = RequestMethod.POST, consumes="application/json")
     public String processData(@RequestBody BlobKey blobKey) throws Exception {
-      
-      DataHandler dh = new DataHandler();
-      dh.importData(blobKey.getSrc());
+
+      DataHandler.processData(blobKey.getSrc());
 
       return blobKey.toString();
     }
