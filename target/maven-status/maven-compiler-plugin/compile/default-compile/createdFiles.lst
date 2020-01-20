@@ -1,0 +1,6 @@
+sod/vidalgp/challenge/SearchData.class
+sod/vidalgp/challenge/BlobKey.class
+sod/vidalgp/challenge/GcsController.class
+sod/vidalgp/challenge/FileHoppingApp.class
+sod/vidalgp/challenge/SchemaBuilder.class
+sod/vidalgp/challenge/DataHandler.class
