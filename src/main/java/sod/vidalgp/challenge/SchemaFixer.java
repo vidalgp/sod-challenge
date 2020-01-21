@@ -1,8 +1,5 @@
 package sod.vidalgp.challenge;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;

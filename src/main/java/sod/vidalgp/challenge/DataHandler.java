@@ -1,16 +1,10 @@
 package sod.vidalgp.challenge;
 
-import java.io.IOException;
-import java.util.Objects;
-
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 
 import static org.apache.spark.sql.functions.*;
-import org.apache.spark.sql.types.StructType;
-
-
 
 public class DataHandler {
   static public void processData(String inputPath) throws Exception {
