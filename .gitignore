@@ -1,5 +1,7 @@
 #fldr
 target
+.idea
+challenge.iml
 
 # Compiled class file
 *.class
