@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FileHoppingApp {
+public class DataProcessingApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FileHoppingApp.class, args);
+		SpringApplication.run(DataProcessingApp.class, args);
 	}
 
 }

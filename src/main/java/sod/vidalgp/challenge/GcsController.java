@@ -13,7 +13,7 @@ public class GcsController {
   @RequestMapping(value = "/processDataBlob", method = RequestMethod.POST, consumes="application/json")
     public String processData(@RequestBody BlobKey blobKey) throws Exception {
 
-      DataHandler.processData(blobKey.getSrc());
+      DataHandler.processData(blobKey.getSrc(), blobKey.getDst());
 
       return blobKey.toString();
     }

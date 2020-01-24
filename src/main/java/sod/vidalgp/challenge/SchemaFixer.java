@@ -3,7 +3,6 @@ package sod.vidalgp.challenge;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.Column;
 import org.apache.spark.sql.types.DataTypes;
 
 import static org.apache.spark.sql.functions.*;

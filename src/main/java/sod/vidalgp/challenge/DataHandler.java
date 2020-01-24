@@ -7,7 +7,7 @@ import org.apache.spark.sql.Row;
 import static org.apache.spark.sql.functions.*;
 
 public class DataHandler {
-  static public void processData(String inputPath) throws Exception {
+  static public void processData(String inputPath, String outputPath) throws Exception {
     SparkSession spark = SparkSession.builder()
       .master("local")
       .appName("sod-challenge")
@@ -24,7 +24,12 @@ public class DataHandler {
 
       Dataset<SearchData> dfSearch = SchemaFixer.fixSchema(df);
       dfSearch.printSchema();
-      // dfSearch.na().drop().write().format("csv").save("testfile.csv");
+
+      dfSearch.write()
+              .format("parquet")
+              .option("header", "true")
+              .option("parquet.compression", "none")
+              .save(outputPath);
 
     }
 }
